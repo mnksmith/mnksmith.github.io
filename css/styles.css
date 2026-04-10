@@ -1,0 +1,638 @@
+:root {
+  /* Light base */
+  --bg: #FAF8F5;
+  --bg-warm: #F5F1EB;
+  --bg-card: #FFFFFF;
+  --ink: #1A1A1A;
+  --ink-soft: #2E2E2E;
+  --mid: #6B6560;
+  --muted: #9C9690;
+  --light-line: #E4DFDA;
+  --faint: #F0ECE7;
+
+  /* Color accents — warm, hand-picked, like markers on paper */
+  --red: #D94F3B;
+  --blue: #3B7DD9;
+  --gold: #D4953A;
+  --green: #4A8B6E;
+  --violet: #7B5FA0;
+
+  /* Wing accents */
+  --accent-music: var(--red);
+  --accent-ds: var(--blue);
+
+  /* Fonts */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-hand: 'Caveat', cursive;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ================================================================
+   LANDING PAGE
+   ================================================================ */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Subtle paper-like texture */
+.landing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' type='fractalNoise' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.landing-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.landing-photo-placeholder {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  margin: 0 auto 2rem;
+  background: var(--faint);
+  border: 2px solid var(--light-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-hand);
+  font-size: 2.2rem;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp 0.6s 0.1s forwards;
+  overflow: hidden;
+}
+.landing-photo-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.landing-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+  color: var(--ink);
+  opacity: 0;
+  animation: fadeUp 0.6s 0.2s forwards;
+}
+
+.landing-annotation {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--muted);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.3s forwards;
+}
+
+.landing-doors {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.4s forwards;
+}
+
+.door {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.8rem 3rem;
+  cursor: pointer;
+  border: 1.5px solid var(--light-line);
+  border-radius: 3px;
+  background: var(--bg-card);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+.door:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+.door.door-music:hover { border-color: var(--accent-music); }
+.door.door-ds:hover { border-color: var(--accent-ds); }
+
+.door-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.2rem;
+  transition: color 0.3s;
+}
+.door.door-music:hover .door-title { color: var(--accent-music); }
+.door.door-ds:hover .door-title { color: var(--accent-ds); }
+
+.door-sub {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.door-arrow {
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+.door:hover .door-arrow { transform: translateX(4px); }
+
+/* ================================================================
+   SHARED NAV
+   ================================================================ */
+.wing-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 0.9rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250,248,245,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--light-line);
+}
+.wing-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.wing-nav-home {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity 0.3s;
+  letter-spacing: -0.01em;
+}
+.wing-nav-home:hover { opacity: 0.6; }
+.wing-nav-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+.wing-nav-dot.music { background: var(--accent-music); }
+.wing-nav-dot.ds { background: var(--accent-ds); }
+.wing-nav-section {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.wing-nav-section.music-label { color: var(--accent-music); }
+.wing-nav-section.ds-label { color: var(--accent-ds); }
+
+.wing-nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.wing-nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--mid);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.music-wing .wing-nav-links a:hover { color: var(--accent-music); }
+.ds-wing .wing-nav-links a:hover { color: var(--accent-ds); }
+
+/* ================================================================
+   MUSIC WING — sketchbook / mixtape feel
+   ================================================================ */
+.music-wing { padding-top: 0; }
+
+.music-hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-warm);
+}
+.music-hero-img-area {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+}
+.music-hero-img-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.music-hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+.music-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 6vw 6vh;
+}
+.music-hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+.music-hero-sub {
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  color: var(--mid);
+}
+
+/* Section styling — music */
+.m-section {
+  padding: 4rem 6vw;
+  max-width: 800px;
+  margin: 0 auto;
+  scroll-margin-top: 80px;
+}
+.m-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-music);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.m-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--light-line);
+}
+
+/* Coming soon — sketchbook card */
+.sketch-card {
+  border: 1.5px dashed var(--light-line);
+  border-radius: 2px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  background: var(--bg-card);
+  position: relative;
+}
+.sketch-card::before,
+.sketch-card::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+.sketch-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--accent-music);
+  border-left: 2px solid var(--accent-music);
+}
+.sketch-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--accent-music);
+  border-right: 2px solid var(--accent-music);
+}
+.sketch-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+.sketch-card .hand-note {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: var(--mid);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.social-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.social-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--mid);
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--light-line);
+  border-radius: 100px;
+  transition: all 0.3s;
+  background: var(--bg);
+}
+.social-pill:hover {
+  color: var(--accent-music);
+  border-color: var(--accent-music);
+  background: rgba(217,79,59,0.04);
+}
+
+/* Collabs — like notes pinned to a board */
+.collabs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.collab-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--faint);
+  transition: all 0.2s;
+}
+.collab-row:hover {
+  padding-left: 0.5rem;
+}
+.collab-row:last-child { border-bottom: none; }
+.collab-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.collab-row:hover .collab-name { color: var(--accent-music); }
+.collab-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* Music bio */
+.m-bio p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  max-width: 580px;
+}
+
+/* Contact */
+.contact-row {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.contact-item {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+.contact-item span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.contact-item a {
+  border-bottom: 1px solid var(--light-line);
+  transition: all 0.3s;
+}
+.music-wing .contact-item a:hover {
+  color: var(--accent-music);
+  border-color: var(--accent-music);
+}
+.ds-wing .contact-item a:hover {
+  color: var(--accent-ds);
+  border-color: var(--accent-ds);
+}
+
+/* ================================================================
+   DATA SCIENCE WING — cleaner, academic
+   ================================================================ */
+.ds-wing { padding-top: 60px; }
+
+.ds-hero {
+  padding: 4rem 6vw 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: start;
+}
+.ds-hero-text h1 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.ds-hero-text p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  margin-bottom: 0.6rem;
+}
+.ds-link {
+  color: var(--accent-ds);
+  border-bottom: 1px solid rgba(59,125,217,0.25);
+  transition: border-color 0.3s;
+}
+.ds-link:hover { border-color: var(--accent-ds); }
+
+.ds-hero-photo {
+  width: 120px;
+  height: 150px;
+  border-radius: 3px;
+  background: var(--faint);
+  border: 1px solid var(--light-line);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-hand);
+  font-size: 0.9rem;
+  color: var(--muted);
+  overflow: hidden;
+}
+.ds-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ds-section {
+  padding: 2.5rem 6vw;
+  max-width: 800px;
+  margin: 0 auto;
+  scroll-margin-top: 80px;
+}
+.ds-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-ds);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.ds-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--light-line);
+}
+
+.ds-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--faint);
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1rem;
+  align-items: baseline;
+}
+.ds-item:last-of-type { border-bottom: none; }
+.ds-item-year {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding-top: 0.1rem;
+}
+.ds-item-content h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+  letter-spacing: -0.01em;
+}
+.ds-item-content p {
+  font-size: 0.82rem;
+  color: var(--mid);
+  line-height: 1.55;
+}
+.ds-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+  color: var(--accent-ds);
+  background: rgba(59,125,217,0.06);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  margin-right: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.ds-cv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--accent-ds);
+  border: 1px solid rgba(59,125,217,0.2);
+  padding: 0.5rem 1.2rem;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.ds-cv-link:hover {
+  background: rgba(59,125,217,0.05);
+  border-color: rgba(59,125,217,0.4);
+}
+
+/* ================================================================
+   SHARED FOOTER
+   ================================================================ */
+.wing-footer {
+  padding: 3rem 6vw 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  border-top: 1px solid var(--faint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.wing-footer a {
+  color: var(--mid);
+  transition: color 0.3s;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+}
+.music-wing .wing-footer a:hover { color: var(--accent-ds); }
+.ds-wing .wing-footer a:hover { color: var(--accent-music); }
+
+/* ================================================================
+   ANIMATIONS
+   ================================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 640px) {
+  .landing-doors { flex-direction: column; gap: 0.75rem; }
+  .door { padding: 1.4rem 2.5rem; }
+  .wing-nav { padding: 0.8rem 1.2rem; }
+  .wing-nav-links { gap: 1.2rem; }
+  .wing-nav-links a { font-size: 0.78rem; }
+  .m-section, .ds-section, .ds-hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .ds-hero { grid-template-columns: 1fr; }
+  .ds-hero-photo { width: 90px; height: 110px; }
+  .ds-item { grid-template-columns: 1fr; gap: 0.2rem; }
+  .music-hero-content { padding: 0 1.5rem 4vh; }
+  .collab-row { flex-direction: column; gap: 0.15rem; }
+  .collab-desc { text-align: left; }
+  .contact-row { flex-direction: column; gap: 1.2rem; }
+}

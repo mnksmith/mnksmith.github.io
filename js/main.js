@@ -1,4 +1,20 @@
 (function () {
+  // Hamburger menu toggle
+  var burger = document.querySelector('.nav-burger');
+  var navLinks = document.querySelector('.wing-nav-links');
+  if (burger && navLinks) {
+    burger.addEventListener('click', function () {
+      burger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.addEventListener('click', function (e) {
+      if (e.target.closest('a')) {
+        burger.classList.remove('open');
+        navLinks.classList.remove('open');
+      }
+    });
+  }
+
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a[href^="#"]');
     if (!link) return;

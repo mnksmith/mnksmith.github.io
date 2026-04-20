@@ -793,18 +793,71 @@ a { color: inherit; text-decoration: none; }
    RESPONSIVE
    ================================================================ */
 @media (max-width: 640px) {
+  /* Landing */
   .landing-doors { flex-direction: column; gap: 0.75rem; }
   .door { padding: 1.4rem 2.5rem; }
-  .wing-nav { padding: 0.8rem 1.2rem; }
-  .wing-nav-links { gap: 1.2rem; }
-  .wing-nav-links a { font-size: 0.78rem; }
+
+  /* Nav — stack into two rows */
+  .wing-nav {
+    flex-wrap: wrap;
+    padding: 0.7rem 1.2rem;
+    gap: 0.1rem 0;
+  }
+  .wing-nav-left {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .wing-nav-links {
+    width: 100%;
+    gap: 1.2rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--faint);
+    margin-top: 0.35rem;
+  }
+  .wing-nav-links a { font-size: 0.75rem; }
+
+  /* Bump top padding / scroll-margin to clear taller two-row nav */
+  .ds-wing { padding-top: 80px; }
+  .m-section, .ds-section { scroll-margin-top: 100px; }
+
+  /* Sections */
   .m-section, .ds-section, .ds-hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+  /* DS hero — stack photo below text */
   .ds-hero { grid-template-columns: 1fr; }
   .ds-hero-photo { width: 90px; height: 110px; }
+
+  /* DS project cards — single column */
   .ds-projects { grid-template-columns: 1fr; gap: 0.9rem; }
   .ds-item { grid-template-columns: 1fr; gap: 0.2rem; }
+
+  /* Music hero */
+  .music-hero { min-height: 70vh; }
   .music-hero-content { padding: 0 1.5rem 4vh; }
+  .music-hero-name { font-size: clamp(2rem, 10vw, 2.8rem); }
+
+  /* Mixtape player — stack vertically on very small screens */
+  .sketch-card { padding: 2rem 1.2rem; }
+
+  /* Collabs */
   .collab-row { flex-direction: column; gap: 0.15rem; }
   .collab-desc { text-align: left; }
+
+  /* Contact */
   .contact-row { flex-direction: column; gap: 1.2rem; }
+
+  /* Footer */
+  .wing-footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .wing-nav-left { gap: 0.7rem; }
+  .wing-nav-home { font-size: 0.85rem; }
+  .wing-nav-section { font-size: 0.58rem; }
+
+  .mixtape-player { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+  .mixtape-play { align-self: center; }
+
+  .ds-hero-text h1 { font-size: 1.4rem; }
+  .ds-project-desc { font-size: 0.8rem; }
 }
